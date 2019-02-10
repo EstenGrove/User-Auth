@@ -2,11 +2,11 @@
   <section class="wrapper">
     <form action="#" class="signup">
       <h4 class="formTitle">Signup</h4>
-      <label for class="usernameLabel">Username</label>
-      <input type="text" name="username" id="username" v-model="username" required>
+      <label for class="emailLabel">Email</label>
+      <input type="text" name="username" id="username" v-model="email" required>
       <label for class="passwordLabel">Password</label>
-      <input type="text" name="password" id="password" v-model="password" required>
-      <button class="signupBtn" type="submit">Signup</button>
+      <input type="password" name="password" id="password" v-model="password" required>
+      <button class="signupBtn" type="submit" @click.prevent="signup">Signup</button>
       <p class="switch">Or Login
         <router-link to="/">
           <a href="#" class="switchForm">here</a>
@@ -17,16 +17,34 @@
 </template>
 
 <script>
-import routes from "../routes.js";
+import { routes } from "../routes.js";
+import firebase from "../firebase/init.js";
+
 export default {
   name: "Signup",
   data() {
     return {
-      username: null,
+      email: null,
       password: null,
       is_admin: null,
       is_authenitcated: false
     };
+  },
+  methods: {
+    signup() {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(
+          function(user) {
+            alert("Your account has been created!");
+            this.routes.push({ path: "/", name: "Login" });
+          },
+          function(err) {
+            alert("Oops. " + err.message);
+          }
+        );
+    }
   }
 };
 </script>
@@ -64,7 +82,7 @@ html {
   font-family: "Abril Fatface";
   margin-bottom: 2rem;
 }
-.usernameLabel,
+.emailLabel,
 .passwordLabel {
   width: 100%;
   font-size: 1.5rem;

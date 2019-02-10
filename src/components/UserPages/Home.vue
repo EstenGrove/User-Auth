@@ -14,10 +14,12 @@
         </router-link>
       </p>
     </div>
-    <p class="user-status">{{userStatus}}</p>
     <main class="container">
       <div class="stats">
-        <h4 class="user"></h4>
+        <p class="user-status">{{userStatus}}</p>
+        <h2 class="stats-title">User Information</h2>
+        <h4 class="user">Username: {{username}}</h4>
+        <h4 class="password">Password: {{password}}</h4>
       </div>
     </main>
   </section>
@@ -25,6 +27,7 @@
 <script>
 export default {
   name: "Home",
+  props: ["username", "password"],
   data() {
     return {
       userStatus: "Logged in"
@@ -36,6 +39,9 @@ export default {
       const dropDown = document.querySelector(".dropDown");
       dropDown.classList.toggle("show");
     }
+  },
+  created() {
+    this.$store.state.loggedIn = true;
   }
 };
 </script>
@@ -81,11 +87,12 @@ body {
   right: 1rem;
   width: 8rem;
   height: 5rem;
-  background: #f4f4f4;
+  background: #fff;
   font-family: "Raleway";
 }
 .droplink {
   padding: 0.1rem;
+  font-size: 0.8rem;
 }
 .navLink {
   font-family: "Raleway";
@@ -111,6 +118,27 @@ svg {
 }
 .green {
   color: #3eaf7c;
+}
+.container {
+  max-width: 100vw;
+  height: 40rem;
+  padding: 1rem 3rem;
+}
+.stats {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  font-family: "Raleway";
+  border: 1px solid #eaecef;
+  border-radius: 0.3rem;
+  box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.75);
+}
+.stats-title {
+  margin-bottom: 2rem;
+}
+.user,
+.password {
+  font-weight: 300;
 }
 </style>
  

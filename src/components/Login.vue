@@ -3,11 +3,11 @@
     <section class="wrapper">
       <form action="#" class="login">
         <h4 class="formTitle">Login</h4>
-        <label for class="usernameLabel">Username</label>
-        <input type="text" name="username" id="username" v-model="username" required>
+        <label for class="emailLabel">Email</label>
+        <input type="text" name="username" id="username" v-model="email" required>
         <label for class="passwordLabel">Password</label>
         <input type="text" name="password" id="password" v-model="password" required>
-        <button class="loginBtn" type="submit" @click.prevent="authUser(username, password)">Login</button>
+        <button class="loginBtn" type="submit" @click="signIn">Login</button>
         <p class="switch">Or Signup
           <router-link to="/signup">
             <a class="switchForm">here</a>
@@ -21,32 +21,32 @@
 <script>
 import Home from "./UserPages/Home";
 import Routes from "../routes.js";
+import firebaseApp from "../firebase/init.js";
 
 export default {
   name: "Login",
   data() {
     return {
-      username: null,
+      email: null,
       password: null,
-      authenticated: false,
+      loggedIn: false,
       is_admin: null
     };
   },
   methods: {
-    authUser(un, pw) {
-      if (this.username && this.password) {
-        un = this.username;
-        pw = this.password;
-        // Direct to Home Page
-        this.$router.push({
-          path: "/home",
-          name: "Home",
-          component: Home,
-          params: { un, pw }
-        });
-      } else {
-        return;
-      }
+    signIn() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(
+          user => {
+            alert("You are now logged in");
+            this.$router.push({ path: "/home", name: "Home", component: Home });
+          },
+          err => {
+            alert("Oops." + err.message);
+          }
+        );
     }
   }
 };
@@ -94,7 +94,7 @@ html {
   font-family: "Abril Fatface";
   margin-bottom: 2rem;
 }
-.usernameLabel,
+.emailLabel,
 .passwordLabel {
   width: 100%;
   font-size: 1.2rem;
