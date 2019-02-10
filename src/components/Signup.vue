@@ -85,7 +85,7 @@ html {
 .emailLabel,
 .passwordLabel {
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-family: "Raleway";
   font-weight: 300;
   color: #aaa;
